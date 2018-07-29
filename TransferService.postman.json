@@ -1,0 +1,248 @@
+{
+	"id": "2cf79285-ae53-460b-9614-5df412bd7174",
+	"name": "TransferService",
+	"description": null,
+	"auth": null,
+	"events": null,
+	"variables": null,
+	"order": [
+		"4b36e503-78e3-4e9a-9b11-b79e289d3b59",
+		"f874d404-fdaf-43f1-b916-f102adac6cc7",
+		"c1174564-ae2b-4833-8d70-4328d5d98213",
+		"43cea7a6-7839-4f98-a9e1-d11a9443ca42",
+		"04470e7f-f400-4f56-99b5-29342ed2bd71",
+		"c2b1a842-659b-41d7-9622-5e7bd074bb88"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
+		{
+			"id": "04470e7f-f400-4f56-99b5-29342ed2bd71",
+			"name": "Insufficient balance",
+			"url": "http://localhost:8080/transfer",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "56e00511-408c-46b4-9a1d-44295629586a",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"status code is 402 : Internal server error\"] = responseCode.code === 402;"
+						]
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\t\"sourceAccountNumber\":\"NLBANA688989\",\n\t\"destinationAccountNumber\":\"NLBANA6889899\",\n\t\"amount\":\"90\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "43cea7a6-7839-4f98-a9e1-d11a9443ca42",
+			"name": "Source account required",
+			"url": "http://localhost:8080/transfer",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0bcca455-3138-407d-9e84-dd09dc21a461",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"status code is 400 : Bad request\"] = responseCode.code === 400;"
+						]
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\n\t\"destinationAccountNumber\":\"NLBANA6889899\",\n\t\"amount\":\"1\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "4b36e503-78e3-4e9a-9b11-b79e289d3b59",
+			"name": "Create account",
+			"url": "http://localhost:8080/accounts",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8ee54db1-1a40-467a-b8bf-cae1d2947d0a",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"status code is 201 : CREATED\"] = responseCode.code === 201;"
+						]
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\t\"accountName\":\"Sonam Mittal\",\n\t\"balance\":\"67\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "c1174564-ae2b-4833-8d70-4328d5d98213",
+			"name": "Transfer Money",
+			"url": "http://localhost:8080/transfer",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "87c0ca86-f381-4715-8ab9-40889e6958b0",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"status code is 200 : Internal server error\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\t\"sourceAccountNumber\":\"NLBANA688989\",\n\t\"destinationAccountNumber\":\"NLBANA6889899\",\n\t\"amount\":\"1\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "c2b1a842-659b-41d7-9622-5e7bd074bb88",
+			"name": "Account number not found",
+			"url": "http://localhost:8080/transfer",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "42ec9327-8c35-46eb-afe3-04107a5d3b6d",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"status code is 404 : NOT FOUND\"] = responseCode.code === 404;"
+						]
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\t\"sourceAccountNumber\":\"NLBANA6889898\",\n\t\"destinationAccountNumber\":\"NLBANA6889899\",\n\t\"amount\":\"90\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "f874d404-fdaf-43f1-b916-f102adac6cc7",
+			"name": "Balance is null",
+			"url": "http://localhost:8080/accounts",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d32a6b42-5542-4166-9d5d-89f64570d24e",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"status code is 400 : BAD REQUEST\"] = responseCode.code === 400;"
+						]
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\t\"accountName\":\"Sonam Mittal\"\n}",
+			"headers": "Content-Type: application/json\n",
+			"pathVariables": {}
+		}
+	]
+}

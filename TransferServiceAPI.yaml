@@ -1,0 +1,97 @@
+swagger: '2.0'
+info:
+  description: This is sample trasnfer service application
+  version: 1.0.0
+  title: Transfer Service API
+  contact:
+    email: sonasonammittal269@gmail.com
+  license:
+    name: ©SonamMittal
+host: 'localhost:8080'
+basePath: /
+tags:
+  - name: account
+    description: Account management API
+  - name: transfer
+    description: API to carry out maney transfer
+schemes:
+  - http
+paths:
+  /accounts:
+    post:
+      tags:
+        - account
+      summary: Create a new account
+      description: API to create a new account based on input request
+      operationId: createAccount
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Account information like name & balance
+          required: true
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        '201':
+          description: Account created
+        '400':
+          description: Invalid input
+        '500':
+            description: Internal server error
+  /transfer:
+    post:
+      tags:
+        - transfer
+      summary: API to transfer from an account to another
+      description: ''
+      operationId: transferMoney
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: 'Money transfer information(fromAccount, toAccount)'
+          required: true
+          schema:
+            $ref: '#/definitions/Transfer'
+      responses:
+        '200':
+          description: Transfer success
+        '400':
+          description: Invalid input
+        '402':
+            description: Payment REJECTED
+        '500':
+            description: Internal server error
+definitions:
+  Account:
+    type: object
+    properties:
+      accountNumber:
+        type: string
+      accountName:
+        type: string
+      balance:
+        type: number
+        format: double
+  Transfer:
+    type: object
+    properties:
+      sourceAccountNumber:
+        type: string
+      destinationAccountNumber:
+        type: string
+      amount:
+        type: number
+        format: double
+      transferStatus:
+        type: string
+        enum:
+          - SUCCESS
+          - REJECTED
