@@ -6,7 +6,7 @@ The service consists of two controllers: AccountController and TransferControlle
 AccountController is responsible for handling account management viz POST (Create account) and GET (List accounts) on resource *Account*.
 TransferController is responsible for handling transfer viz POST( transfer amount) on resource Transfer.
 
-The detailed API description is present in the swagger file.
+The detailed API description is present in the swagger file (https://github.com/Sonam269/TransferService/blob/master/TransferServiceAPI.yaml)
 
 There are two processor classes : AccountProcessor and TransferProcessor responsible for processing any action on respective resource(Account and Transfer).
 
@@ -60,7 +60,7 @@ It can be deployed in various servers like, Tomcat, WAS and also on cloud platfo
 
 ## Usage / Examples
 
-Described in Open API specification(Swagger) YAML (TransferServiceApi.yaml)
+Described in Open API specification(Swagger) YAML (TransferServiceApi.yaml, https://github.com/Sonam269/TransferService/blob/master/TransferServiceAPI.yaml)
 
 Url for account creation:
 
@@ -90,7 +90,7 @@ Body
 
 ## Automated Test cases
 
-Basic scenarios are automated in postman (TransferService.postman.json)
+Basic scenarios are automated in postman (TransferService.postman.json, https://github.com/Sonam269/TransferService/blob/master/TransferService.postman.json)
 
 ## Future Vision
 Api authorization can be done using api token
