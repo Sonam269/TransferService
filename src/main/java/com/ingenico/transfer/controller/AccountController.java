@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.ingenico.transfer.exception.Message;
+import com.ingenico.transfer.exception.TransferServiceConstants;
 import com.ingenico.transfer.exception.TransferServiceException;
 import com.ingenico.transfer.processor.AccountProcessor;
 import com.ingenico.transfer.resource.Account;
@@ -36,12 +37,11 @@ public class AccountController {
 		Account accountOutput;
 		try {
 			Optional.ofNullable(account).orElseThrow(() -> new TransferServiceException(
-					new Message("NO_INFORMATION_PRESENT", "No information present", HttpStatus.BAD_REQUEST)));
+					new Message(TransferServiceConstants.ERROR_NO_INFORMATION_PRESENT,TransferServiceConstants.MSG_NO_INFORMATION_PRESENT, HttpStatus.BAD_REQUEST)));
 			Optional.ofNullable(account.getAccountName())
-					.orElseThrow(() -> new TransferServiceException(new Message("ACCOUNT_NAME_IS REQUIRED",
-							"Account Name should be present.. ", HttpStatus.BAD_REQUEST)));
+					.orElseThrow(() -> new TransferServiceException(new Message(TransferServiceConstants.ERROR_ACCOUNT_NAME_IS_REQUIRE,TransferServiceConstants.MSG_ACCOUNT_NAME_IS_REQUIRE, HttpStatus.BAD_REQUEST)));
 			Optional.ofNullable(account.getBalance()).orElseThrow(() -> new TransferServiceException(
-					new Message("BALANCE_IS_REQUIRED", "Balance should be present.. ", HttpStatus.BAD_REQUEST)));
+					new Message(TransferServiceConstants.ERROR_BALANCE_IS_REQUIRED, TransferServiceConstants.MSG_BALANCE_IS_REQUIRED,HttpStatus.BAD_REQUEST)));
 			accountOutput = accountProcessor.createAccount(account);
 		} catch (TransferServiceException exception) {
 			return new ResponseEntity<>(exception.getErrorMessage(), exception.getErrorMessage().getCode());

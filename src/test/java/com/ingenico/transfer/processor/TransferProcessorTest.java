@@ -49,14 +49,7 @@ public class TransferProcessorTest {
 
 	}
 
-	@Test
-	public void test_transferAmountSuccess() throws TransferServiceException {
-		when(accountProcessor.getBalance(transfer.getSourceAccountNumber())).thenReturn(new BigDecimal("89"));
-		when(accountProcessor.getBalance(transfer.getDestinationAccountNumber())).thenReturn(new BigDecimal("8"));
-		assertEquals(TransferStatus.SUCCESS, transferProcessor.transferAmount(transfer).getTransferStatus());
-
-	}
-
+	
 	@Test(expected = TransferServiceException.class)
 	public void test_transferAmountInsufficientBalance() throws TransferServiceException {
 		when(accountProcessor.getBalance(transfer.getSourceAccountNumber())).thenReturn(new BigDecimal("7"));

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import com.ingenico.transfer.exception.Message;
+import com.ingenico.transfer.exception.TransferServiceConstants;
 import com.ingenico.transfer.exception.TransferServiceException;
 import com.ingenico.transfer.resource.Transfer;
 import com.ingenico.transfer.resource.TransferStatus;
+import com.mongodb.Mongo;
 
 /**
  * This processor is used to process any actions on resource Transfer
@@ -36,20 +38,18 @@ public class TransferProcessor {
 		logger.debug("Start of transfer");
 
 		BigDecimal amountToBeTransfered = transfer.getAmount();
-		if (accountProcessor.getBalance(transfer.getSourceAccountNumber()).compareTo(amountToBeTransfered) >= 0) {
+		String sourceAccount = transfer.getSourceAccountNumber();
+		if (accountProcessor.getBalance(sourceAccount).compareTo(amountToBeTransfered) >= 0) {
 
-			accountProcessor.updateBalance(transfer.getDestinationAccountNumber(),
-					(accountProcessor.getBalance(transfer.getDestinationAccountNumber()).add(amountToBeTransfered)));
-			accountProcessor.updateBalance(transfer.getSourceAccountNumber(),
-					(accountProcessor.getBalance(transfer.getSourceAccountNumber()).subtract(amountToBeTransfered)));
+			accountProcessor.updateAccounts(sourceAccount, amountToBeTransfered,
+					transfer.getDestinationAccountNumber());
+			transfer.setTransferStatus(TransferStatus.SUCCESS);
 
 		} else {
-			logger.error("ERROR OCCURRED :InsufficientBalance");
-			throw new TransferServiceException(new Message("INSUFFICIENT_BALANCE",
-					"Transaction failed due to insufficient balance", HttpStatus.PAYMENT_REQUIRED));
+			logger.error(TransferServiceConstants.LOG_INSUFFICIENT_BALANCE);
+			throw new TransferServiceException(new Message(TransferServiceConstants.ERROR_INSUFFICIENT_BALANCE,
+					TransferServiceConstants.MSG_INSUFFICIENT_BALANCE, HttpStatus.PAYMENT_REQUIRED));
 		}
-
-		transfer.setTransferStatus(TransferStatus.SUCCESS);
 
 		return transfer;
 	}

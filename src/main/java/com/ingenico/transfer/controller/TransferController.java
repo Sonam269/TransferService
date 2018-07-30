@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.ingenico.transfer.exception.Message;
+import com.ingenico.transfer.exception.TransferServiceConstants;
 import com.ingenico.transfer.exception.TransferServiceException;
 import com.ingenico.transfer.processor.TransferProcessor;
 import com.ingenico.transfer.resource.Transfer;
@@ -34,12 +35,13 @@ public class TransferController {
 		Transfer transferOutput;
 		try {
 			Optional.ofNullable(transfer).orElseThrow(() -> new TransferServiceException(
-					new Message("NO_INFORMATION_PRESENT", "No information present", HttpStatus.BAD_REQUEST)));
+					new Message(TransferServiceConstants.ERROR_NO_INFORMATION_PRESENT,TransferServiceConstants.MSG_NO_INFORMATION_PRESENT, HttpStatus.BAD_REQUEST)));
 			Optional.ofNullable(transfer.getDestinationAccountNumber())
-					.orElseThrow(() -> new TransferServiceException(new Message("DESTINATION_ACCOUNT_REQUIRED",
-							"Destination account must not be null", HttpStatus.BAD_REQUEST)));
+					.orElseThrow(() -> new TransferServiceException(new Message(TransferServiceConstants.ERROR_DEST_ACCOUNT_REQUIRED,TransferServiceConstants.MSG_DEST_ACCOUNT_REQUIRED, HttpStatus.BAD_REQUEST)));
 			Optional.ofNullable(transfer.getSourceAccountNumber()).orElseThrow(() -> new TransferServiceException(
-					new Message("SOURCE_ACCOUNT_REQUIRED", "Source account must not be null", HttpStatus.BAD_REQUEST)));
+					new Message(TransferServiceConstants.ERROR_SOURCE_ACCOUNT_IS_REQUIRED,TransferServiceConstants.MSG_SOURCE_ACCOUNT_IS_REQUIRED, HttpStatus.BAD_REQUEST)));
+			Optional.ofNullable(transfer.getAmount()).orElseThrow(() -> new TransferServiceException(
+					new Message(TransferServiceConstants.ERROR_AMOUNT_IS_REQUIRED, TransferServiceConstants.MSG_BALANCE_IS_REQUIRED,HttpStatus.BAD_REQUEST)));
 			transferOutput = transferProcessor.transferAmount(transfer);
 		} catch (TransferServiceException transferServiceException) {
 			return new ResponseEntity<>(transferServiceException.getErrorMessage(),
